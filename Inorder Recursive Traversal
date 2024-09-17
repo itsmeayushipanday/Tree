@@ -1,0 +1,16 @@
+class Solution {
+public:
+    //inorder traversal recursive sol
+    //tc-o(n), sc-o(logn) recursive stack space and o(n) for ans
+    void fn(TreeNode* root, vector<int> &ans){
+        if(root == NULL) return;
+        fn(root->left, ans);
+        ans.push_back(root->val);
+        fn(root->right, ans);
+    }
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> ans;
+        fn(root, ans);
+        return ans;
+    }
+};
