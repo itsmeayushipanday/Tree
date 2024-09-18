@@ -1,0 +1,36 @@
+class Solution
+{
+    public:
+    //Function to return a list of nodes visible from the top view 
+    //from left to right in Binary Tree.
+    vector<int> topView(Node *root)
+    {
+        vector<int> ans;
+        queue<pair<Node*, int>> q; //node, line
+        map<int, int> mp;//map used to get sorted value in ans
+        q.push({root, 0});
+        
+        while(!q.empty()){
+            auto it = q.front();
+            Node* node = it.first;
+            int line = it.second;
+            q.pop();
+            
+            //if particular line is not visited, then only visit it
+            //else do not visit
+            if(mp.find(line) == mp.end()){
+                mp[line] = node->data;
+            }
+            
+            if(node->left) q.push({node->left, line-1});
+            if(node->right) q.push({node->right, line+1});
+        }
+        
+        //line->nodeData
+        for(auto it:mp){
+            ans.push_back(it.second);
+        }
+        return ans;
+    }
+
+};
