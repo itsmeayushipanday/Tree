@@ -1,0 +1,33 @@
+Time Complexity: O(log2N) where N is the number of nodes in the Binary Tree. This complexity arises as 
+we travel along the height of the Binary Tree. For a balanced binary tree, the height is log2N but in 
+the worst case when the tree is skewed, the complexity becomes O(N).
+
+Space Complexity: O(log2N) where N is the number of nodes in the Binary Tree. This complexity arises 
+because we store the leftmost and rightmost nodes in an additional vector. The size of this result vector 
+is proportional to the height of the Binary Tree which will be log2N when the tree is balanced and O(N) in 
+the worst case of a skewed tree.
+
+class Solution {
+public:
+    void fn(TreeNode* node, vector<int> &ans, int level){
+        if(node == NULL) return;
+        
+        if(level == ans.size()){ //initially ans size is 0 and level is also 0
+        //so push the node value in ans
+        //next time ans size is 1 and your level is also 1 then push
+        //it will make sure that if there is increase in level then only insertion happens in ans
+            ans.push_back(node->val);
+        }
+
+        //TO GET LEFT VIEW, JUST INTERCHANGE THESE TWO LINES AND YOU WILL GET YOUR ANSWER
+        fn(node->right, ans, level+1); //firstly traverse all the right subtrees
+        fn(node->left, ans, level+1); //then left subtrees-->only executed if ans size == level else return 
+    }
+    vector<int> rightSideView(TreeNode* root) {
+        //Rev preorder traversal is applied from Root left right to root right left
+        vector<int> ans;
+        int level = 0;
+        fn(root, ans, 0);
+        return ans;
+    }
+};
