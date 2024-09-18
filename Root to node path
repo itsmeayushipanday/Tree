@@ -1,0 +1,21 @@
+//tc-o(n), sc-o(n)
+class Solution {
+  public:
+    void fn(Node* root, vector<vector<int>> &ans, vector<int> &temp){
+        if(!root) return;
+        //in each path, root node will be there
+        temp.push_back(root->data);
+        if(root->left == NULL && root->right == NULL){
+            ans.push_back(temp);
+        }
+        if(root->left) fn(root->left, ans, temp);
+        if(root->right) fn(root->right, ans, temp);
+        temp.pop_back();//remove the curr path node, and go to prev paths 
+    }
+    vector<vector<int>> Paths(Node* root) {
+        vector<vector<int>> ans;
+        vector<int> temp;
+        fn(root, ans, temp);
+        return ans;
+    }
+};
