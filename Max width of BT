@@ -1,0 +1,45 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+//tc-o(n), sc-o(n)
+    int widthOfBinaryTree(TreeNode* root) {
+        int ans = 0;
+        if(root == NULL) return ans;
+        queue<pair<TreeNode*, long long>> q; //node, index
+        q.push({root, 0}); // initial root and idx is 0
+
+        while(!q.empty()){
+            int size = q.size();
+            long long miniIdx = q.front().second; //this is the min index among all elements present currently in queue
+            long long firstIdx, lastIdx;
+            //traverse in queue for given size-> size
+            for(int i=0; i<size; i++){
+                TreeNode* node = q.front().first;
+                long long currIdx = q.front().second - miniIdx; //curr idx for each iter in reference to miniIdx
+                q.pop();
+
+                if(i == 0) firstIdx = currIdx; //need only first and last idx, skips all btw indexes
+                if(i == size-1) lastIdx = currIdx;
+
+                if(node->left){
+                    q.push({node->left, 2*currIdx+1});
+                }
+                if(node->right){
+                    q.push({node->right, 2*currIdx+2});
+                }
+            }
+            ans = max(ans, static_cast<int>(lastIdx - firstIdx + 1));
+        }
+        return ans;
+    }
+};
