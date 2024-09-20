@@ -1,0 +1,50 @@
+class Solution {
+  public:
+    // Function to convert a binary tree into its mirror tree.
+tc-o(n), sc -o(n)
+    void mirror(Node* node) {
+        if(!node) return;
+        queue<Node*> q;
+        q.push(node);
+        
+        while(!q.empty()){
+            Node* curr = q.front();
+            q.pop();
+            
+            swap(curr->left, curr->right);
+            if(curr->left) q.push(curr->left);
+            if(curr->right) q.push(curr->right);
+        }
+    }
+};
+
+// function Template for C++
+
+/* A binary tree node has data, pointer to left child
+   and a pointer to right child /
+struct Node
+{
+    int data;
+    struct Node* left;
+    struct Node* right;
+
+    Node(int x){
+        data = x;
+        left = right = NULL;
+    }
+}; */
+
+/////////////METHOD 2///////////////////
+Time Complexity: O(n)
+Space Complexity: O(h), where h is the height of the binary tree. 
+In the worst case, it is O(n).
+class Solution {
+  public:
+    // Function to convert a binary tree into its mirror tree.
+    void mirror(Node* node) {
+        if(!node) return;
+        mirror(node->left);
+        mirror(node->right);
+        swap(node->left, node->right);
+    }
+};
