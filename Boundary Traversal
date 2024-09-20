@@ -1,0 +1,89 @@
+/************************************************************
+
+    Following is the Binary Tree node structure:
+
+    template <typename T>
+    class TreeNode
+    {
+    public:
+        T data;
+        TreeNode<T> *left;
+        TreeNode<T> *right;
+
+        TreeNode(T data)
+        {
+            this -> data = data;
+            left = NULL;
+            right = NULL;
+        }
+
+        ~TreeNode()
+        {
+            if(left)
+                delete left;
+            if(right)
+                delete right;
+        }
+    };
+
+************************************************************/
+tc-o(n), sc-o(n) worst and o(logn) best
+bool isLeaf(TreeNode<int> *root){
+    return !root->left && !root->right;
+}
+void addLeft(TreeNode<int> *root, vector<int> &ans){
+    TreeNode<int> *curr = root->left;
+    while(curr){
+        if(!isLeaf(curr)){
+            ans.push_back(curr->data);
+        }
+        if(curr->left){
+            curr = curr->left;
+        }
+        else{
+            curr = curr->right;
+        }
+    }
+}
+void addBottom(TreeNode<int> *root, vector<int> &ans){
+    if(isLeaf(root)){
+        ans.push_back(root->data);
+    }
+    if(root->left){
+        addBottom(root->left, ans);
+    }
+    if(root->right){
+        addBottom(root->right, ans);
+    }
+}
+void addRight(TreeNode<int> *root, vector<int> &ans){
+    TreeNode<int> *curr = root->right;
+    vector<int> temp;
+    while(curr){
+        if(!isLeaf(curr)){
+            temp.push_back(curr->data);
+        }
+        if(curr->right){
+            curr=curr->right;
+        }
+        else{
+            curr=curr->left;
+        }
+    }
+    int n = temp.size();
+    for(int i=n-1; i>=0; i--){
+        ans.push_back(temp[i]);
+    }
+}
+vector<int> traverseBoundary(TreeNode<int> *root)
+{
+	vector<int> ans;
+    if(!root) return ans;
+    ans.push_back(root->data);
+
+    addLeft(root, ans);
+    addBottom(root, ans);
+    addRight(root, ans);
+
+    return ans;
+}
