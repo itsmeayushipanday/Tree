@@ -1,0 +1,34 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public
+tc-o(n)
+sc- The recursion stack space is determined by the maximum depth of the recursion, 
+which is the height of the binary tree denoted as H. In the balanced case it is 
+log2N and in the worst case its N.
+    int fn(TreeNode* node, int &sum){
+        if(node == NULL) return 0;
+
+        int left = max(0, fn(node->left, sum)); //if any node value is -ve return 0
+        int right = max(0, fn(node->right, sum));
+
+        sum = max(sum, node->val + left + right); // at curving pt, we find the sum of tha path
+
+        return node->val + max(left, right); //here we will return only that subtree among left or right 
+        //who has more contribution in the sum
+    }
+    int maxPathSum(TreeNode* root) {
+        int sum = -1e9;
+        fn(root, sum);
+        return sum;
+    }
+};
